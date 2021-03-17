@@ -38,7 +38,7 @@ public class UploadService {
 	private ModuleRepository moduleRepository;
 	
 	
-	public List<ModuleResult> upload(MultipartFile file) throws Exception {
+	public List<ModuleResult> upload(MultipartFile file, int module_id) throws Exception {
 
 		Path tempDir = Files.createTempDirectory("");
 
@@ -87,13 +87,7 @@ public class UploadService {
 	                        System.out.println(std1); 
 	                 		result.setStudent(std1);
 	                          break;
-	                     }
-	                     case "module": {
-	                    	   Module module=moduleRepository.findById(Integer.parseInt(cellValue))
-		                 				.orElseThrow(()-> new ResourceNotFoundException("module not exists with this id :"+cellValue));	                    	  
-	                          result.setModule(module);
-	                           break;
-	                     } //example with multiple headers mapping to same field
+	                     }	                    
 	                     case "lab": {
 	                          result.setLab(Integer.parseInt(cellValue));
 	                           break;
@@ -119,6 +113,9 @@ public class UploadService {
 	                           break;
 	                     }
 	                }
+	                Module module=moduleRepository.findById((module_id))
+             				.orElseThrow(()-> new ResourceNotFoundException("module not exists with this id :"+cellValue));	                    	  
+                  result.setModule(module);
 	                //alternatively use if-else block with regex matching or some other technique to map your headers to JPA entity fields
 	            }
 	        }

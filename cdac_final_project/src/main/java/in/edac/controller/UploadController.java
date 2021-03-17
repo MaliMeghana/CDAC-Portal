@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,7 @@ import in.edac.service.ExportService;
 import in.edac.service.StudentService;
 import in.edac.service.UploadService;
 
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/result")
 public class UploadController {
@@ -45,9 +47,9 @@ public class UploadController {
 	private ExportService exportService;
 	
 	@PostMapping("/upload")
-	public void upload(@RequestParam("file") MultipartFile file){
+	public void upload(@PathVariable MultipartFile file, int module_id){
 		try {
-			List<ModuleResult> list=uploadService.upload(file);
+			List<ModuleResult> list=uploadService.upload(file,module_id);
 			//for(ModuleResult res:list) {
 				moduleResultRepository.saveAll(list);
 			//}
