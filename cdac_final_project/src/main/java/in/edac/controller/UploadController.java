@@ -10,10 +10,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import in.edac.dao.StudentDao;
 import in.edac.model.ModuleResult;
 import in.edac.model.Student;
 import in.edac.repository.ModuleResultRepository;
@@ -46,16 +48,20 @@ public class UploadController {
 	@Autowired
 	private ExportService exportService;
 	
+	@Autowired
+	private StudentDao studentDao;
+	
 	@PostMapping("/upload")
-	public void upload(@PathVariable MultipartFile file, int module_id){
+	public void upload(@RequestParam("file") MultipartFile file,int module_id,int batch_id){
 		try {
-			List<ModuleResult> list=uploadService.upload(file,module_id);
+			List<ModuleResult> list=uploadService.upload(file,module_id,batch_id);
 			//for(ModuleResult res:list) {
 				moduleResultRepository.saveAll(list);
 			//}
 				for(ModuleResult res:list) {
 				   System.out.println(list);
 				}
+				studentDao.getRank(module_id, batch_id);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

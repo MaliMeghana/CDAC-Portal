@@ -26,9 +26,9 @@ public class LoginDao extends GenericDao{
 	            .getSingleResult()==1 ? true:false;   
 	}
 	
-	public Long fetch(User user) {
-		return   (Long)entityManager
-				.createQuery("select u.userId from User u where u.userId=:userId and u.password=:password")
+	public User fetch(User user) {
+		return   (User)entityManager
+				.createQuery("select u from User u where u.userId=:userId and u.password=:password")
                 .setParameter("userId", user.getUserId())   
                 .setParameter("password", user.getPassword()) 
 	            .getSingleResult();   

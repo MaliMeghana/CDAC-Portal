@@ -23,12 +23,12 @@ public class User implements Serializable {
 
 	//bi-directional one-to-one association to Student
 	@OneToOne(mappedBy="user")
-	@JsonIgnore
+	
 	private Student student;
 
 	//bi-directional many-to-one association to Role
 	@ManyToOne
-	@JsonIgnore
+	
 	@JoinColumn(name="role_id")
 	private Role role;
 

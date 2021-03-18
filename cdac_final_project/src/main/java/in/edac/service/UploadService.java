@@ -20,12 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import in.edac.exception.ResourceNotFoundException;
+import in.edac.model.Batch;
 import in.edac.model.Module;
 import in.edac.model.ModuleResult;
 import in.edac.model.Student;
 import in.edac.repository.ModuleRepository;
 import in.edac.repository.StudentRepository;
-
+import in.edac.repository.BatchRepository;
 
 
 @Service
@@ -33,12 +34,15 @@ public class UploadService {
 	
 	@Autowired
 	private StudentRepository studentRepository;
+
 	
 	@Autowired
 	private ModuleRepository moduleRepository;
 	
+	@Autowired
+	private BatchRepository batchRepository;
 	
-	public List<ModuleResult> upload(MultipartFile file, int module_id) throws Exception {
+	public List<ModuleResult> upload(MultipartFile file, int module_id,int batch_id) throws Exception {
 
 		Path tempDir = Files.createTempDirectory("");
 
@@ -116,6 +120,10 @@ public class UploadService {
 	                Module module=moduleRepository.findById((module_id))
              				.orElseThrow(()-> new ResourceNotFoundException("module not exists with this id :"+cellValue));	                    	  
                   result.setModule(module);
+                  
+                  Batch batch=batchRepository.findById(batch_id)
+           				.orElseThrow(()-> new ResourceNotFoundException("batch not exists with this id :"+cellValue));	                    	  
+                result.setBatch(batch);
 	                //alternatively use if-else block with regex matching or some other technique to map your headers to JPA entity fields
 	            }
 	        }

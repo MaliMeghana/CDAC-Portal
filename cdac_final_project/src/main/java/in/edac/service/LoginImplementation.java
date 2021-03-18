@@ -16,13 +16,13 @@ public class LoginImplementation implements LoginService{
 	private LoginDao loginDao;
 	
 	@Override
-	public long login(User user) {
+	public User login(User user) {
 		if(loginDao.isUserPresent(user.getUserId())){
 			
-			long userid=loginDao.fetch(user);			
+			User userid=loginDao.fetch(user);			
 			return userid;
 		}
-		return 0;
+		return null;
 	}
 
 	

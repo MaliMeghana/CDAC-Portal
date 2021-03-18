@@ -26,6 +26,10 @@ public class Batch implements Serializable {
 
 	@Column(name="batch_year")
 	private int batchYear;
+	
+	//bi-directional many-to-one association to ModuleResult
+		@OneToMany(mappedBy="batch")
+		private List<ModuleResult> moduleResults;
 
 	//bi-directional many-to-one association to Notice
 	@JsonIgnore

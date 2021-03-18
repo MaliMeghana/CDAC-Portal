@@ -5,8 +5,9 @@ package in.edac.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.StoredProcedureQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +44,20 @@ public class StudentDao {
 				.setParameter("batchid", std.getBatch())
 				.getResultList();
 		return list;
+	}
+	
+	public void getRank(int module_id,int batch_id) {
+		
+		 StoredProcedureQuery query = entityManager.createStoredProcedureQuery("rankGenerate"); 
+
+	        //Declare the parameters in the same order
+	        query.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
+	        query.registerStoredProcedureParameter(2, String.class, ParameterMode.IN);
+	       
+
+	        //Pass the parameter values
+	        query.setParameter(1, module_id);
+	        query.setParameter(2, batch_id);
+	        query.execute();
 	}
 }
